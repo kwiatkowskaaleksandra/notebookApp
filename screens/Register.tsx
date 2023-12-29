@@ -60,9 +60,9 @@ const Register = ({ navigation }: RouterProps) => {
   return (
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.image}></Image>
-      <TextInput value={email} style={styles.input} placeholder="e-mail" autoCapitalize='none' onChangeText={(text) => setEmail(text)} />
-      <TextInput value={username} style={styles.input} placeholder="nazwa użytkownika" autoCapitalize='none' onChangeText={(text) => setUsername(text)} />
-      <TextInput secureTextEntry={true} value={password} style={styles.input} placeholder="hasło" autoCapitalize='none' onChangeText={(text) => setPassword(text)} />
+      <TextInput value={email} style={styles.input} placeholder="e-mail" autoCapitalize='none' onChangeText={(text) => setEmail(text)} placeholderTextColor="gray" />
+      <TextInput value={username} style={styles.input} placeholder="nazwa użytkownika" autoCapitalize='none' onChangeText={(text) => setUsername(text)} placeholderTextColor="gray"/>
+      <TextInput secureTextEntry={true} value={password} style={styles.input} placeholder="hasło" autoCapitalize='none' onChangeText={(text) => setPassword(text)} placeholderTextColor="gray"/>
 
       {loading ? (<ActivityIndicator size='large' color='#0000ff' />)
         : (
@@ -95,7 +95,8 @@ const styles = StyleSheet.create({
     borderColor: '#f2bc0c',
     marginTop: 10,
     marginLeft: 40,
-    marginRight: 40
+    marginRight: 40,
+    color: 'black',
   },
   image: {
     alignSelf: 'center',

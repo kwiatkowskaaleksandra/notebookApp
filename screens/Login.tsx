@@ -101,8 +101,8 @@ const Login = ({ navigation }: RouterProps) => {
     return (
         <View style={styles.container}>
             <Image source={require('../assets/logo.png')} style={styles.image}></Image>
-            <TextInput value={username} style={styles.input} placeholder="nazwa uzytkownika" autoCapitalize='none' onChangeText={(text) => setUsername(text)} />
-            <TextInput secureTextEntry={true} value={password} style={styles.input} placeholder="hasło" autoCapitalize='none' onChangeText={(text) => setPassword(text)} />
+            <TextInput value={username} style={styles.input} placeholder="nazwa uzytkownika" autoCapitalize='none' onChangeText={(text) => setUsername(text)} placeholderTextColor="gray"/>
+            <TextInput secureTextEntry={true} value={password} style={styles.input} placeholder="hasło" autoCapitalize='none' onChangeText={(text) => setPassword(text)} placeholderTextColor="gray"/>
 
             {loading ? (<ActivityIndicator size='large' color='#0000ff' />)
                 : (

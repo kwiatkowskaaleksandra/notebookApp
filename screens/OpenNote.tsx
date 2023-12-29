@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Pressable, SafeAreaView, StyleSheet, TextInput, Text, View } from 'react-native';
+import { Alert, Pressable, SafeAreaView, StyleSheet, TextInput, Text, View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -132,6 +132,7 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
   }
 
   const decryptContent = async (ciphertext: string) => {
+    setLoading(true);
     try {
       let bytes = CryptoJS.AES.decrypt(ciphertext, password);
       let decryptedData = bytes.toString(CryptoJS.enc.Utf8);
@@ -143,7 +144,9 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
       return JSON.parse(decryptedData);
     } catch (error) {
       throw new Error("Deszyfrowanie nie powiodło się.");
-    }
+    }finally {
+          setLoading(false)
+      }
   } 
 
   const encryptContent = () => {
@@ -151,6 +154,7 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
   }
 
   const getNoteById = async () => {
+    setLoading(true);
     try {
       const token = await getToken();
       const response = await fetch(ADDRESS + `/getNoteById?id=${id}`, {
@@ -172,6 +176,8 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
     } catch (error: any) {
       console.error('Błąd otwierania notatki:', error);
       Alert.alert('Błąd otwierania notatki: ' + error.message);
+    }finally {
+      setLoading(false)
     }
   }
 
@@ -191,6 +197,7 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
   }, [isEncrypted]);
 
   const saveEdits = async () => {
+    setLoading(true);
     try {
       const token = await getToken();
       if (isEncrypted) {
@@ -232,6 +239,9 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
       console.error('Błąd edycji notatki:', error);
       Alert.alert('Błąd edycji notatki: ' + error.message);
     }
+    finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -240,24 +250,26 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
         <Dialog.Title>Hasło do notatki</Dialog.Title>
         <Dialog.Input
           placeholder="Wpisz hasło"
+          placeholderTextColor="gray"
           secureTextEntry={true}
           onChangeText={setPassword}
           value={password}
         />
         <Dialog.Button label="Anuluj" onPress={handleCancel} />
-        <Dialog.Button label="Odszyfruj" onPress={handleSubmit} />
+        {loading ? (<ActivityIndicator size='large' color='#0000ff' />) : (<Dialog.Button label="Odszyfruj" onPress={handleSubmit} />)}
       </Dialog.Container>
 
       <Dialog.Container visible={deleteDialogVisible}>
         <Dialog.Title>Potwierdź usunięcie notatki hasłem</Dialog.Title>
         <Dialog.Input
           placeholder="Wpisz hasło"
+          placeholderTextColor="gray"
           secureTextEntry={true}
           onChangeText={setConfirmPassword}
           value={confirmPassword}
         />
         <Dialog.Button label="Anuluj" onPress={() => setDeleteDialogVisible(false)} />
-        <Dialog.Button label="Usuń" onPress={handleSubmitDelete} />
+        {loading ? (<ActivityIndicator size='large' color='#0000ff' />) : (<Dialog.Button label="Usuń" onPress={handleSubmitDelete} /> )}
       </Dialog.Container>
       
       {!editable && (
@@ -278,6 +290,7 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
         placeholder="Tytuł"
         multiline={true}
         editable={editable}
+        placeholderTextColor="gray"
       />
       <TextInput
         style={styles.inputContent}
@@ -286,6 +299,7 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
         placeholder="Notatka..."
         multiline={true}
         editable={editable}
+        placeholderTextColor="gray"
       />
       <View style={styles.checkboxContainer}>
         <Checkbox
@@ -304,15 +318,22 @@ const OpenNote: React.FC<OpenNoteProps> = ({ route, navigation }) => {
           value={password}
           placeholder="hasło notatki"
           secureTextEntry={true}
+          placeholderTextColor="gray"
         />
       )}
-      {editable && (
-        <Pressable onPress={saveEdits} style={styles.button}>
-          <Text style={styles.text} >
-            Zapisz zmiany
-          </Text>
-        </Pressable>
+      {loading ? (
+        <ActivityIndicator size='large' color='#0000ff' />
+      ) : (
+        editable && (
+          <Pressable onPress={saveEdits} style={styles.button}>
+            <Text style={styles.text}>
+              Zapisz zmiany
+            </Text>
+          </Pressable>
+        )
       )}
+
+
     </SafeAreaView>
 )}
 
@@ -373,5 +394,6 @@ const styles = StyleSheet.create({
   },
   label: {
     margin: 8,
+    color: 'black'
   },
 });

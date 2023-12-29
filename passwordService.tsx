@@ -3,7 +3,7 @@ import BcryptReactNative from 'react-native-bcrypt';
 const checkPassword = async (password: string) => {
     const specialCharacters = /[!@#$%^&*()_+{}[\]:;<>,.?~\\]/;
     if (password.length < 10) {
-      return 'Podane hasło jest za krótkie. Powinno zawierać co najmniej 8 znaków.';
+      return 'Podane hasło jest za krótkie. Powinno zawierać co najmniej 10 znaków.';
     }
     if (!/[a-z]/.test(password)) {
       return 'Hasło powinno zawierać co najmniej jedną małą literę.';

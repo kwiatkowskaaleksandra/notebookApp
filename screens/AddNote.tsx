@@ -90,6 +90,7 @@ const AddNote = ({navigation}: RouterProps) => {
                 value={title}
                 placeholder="Tytuł"
                 multiline={true}
+                placeholderTextColor="gray"
             />
             <TextInput
                 style={styles.inputContent}
@@ -97,6 +98,7 @@ const AddNote = ({navigation}: RouterProps) => {
                 value={content}
                 placeholder="Notatka..."
                 multiline={true}
+                placeholderTextColor="gray"
             />
             <View style={styles.checkboxContainer}>
                 <Checkbox
@@ -113,6 +115,7 @@ const AddNote = ({navigation}: RouterProps) => {
                 onChangeText={setPassword}
                 value={password}
                 placeholder="hasło notatki"
+                placeholderTextColor="gray"
                 secureTextEntry={true}
             />
              )} 
@@ -137,6 +140,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       padding: 10,
       borderColor: '#f2bc0c',
+      color: 'black'
     },
     inputContent: {
         height: 150,
@@ -144,6 +148,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         borderColor: '#f2bc0c',
+        color: 'black'
       },
     button: {
         marginTop: 20,
@@ -170,5 +175,6 @@ const styles = StyleSheet.create({
       },
       label: {
         margin: 8,
+        color: 'black'
       },
   });

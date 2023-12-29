@@ -136,15 +136,15 @@ const MyProfile = ({ navigation }: RouterProps) => {
                 <View>
                     <View style={styles.view}>
                         <Text style={styles.label}>Stare hasło</Text>
-                        <TextInput secureTextEntry={true} value={oldPassword} style={styles.input} placeholder="stare hasło" autoCapitalize='none' onChangeText={(text) => setOldPassword(text)} />
+                        <TextInput secureTextEntry={true} value={oldPassword} style={styles.input} placeholder="stare hasło" autoCapitalize='none' onChangeText={(text) => setOldPassword(text)} placeholderTextColor="gray"/>
                     </View>
                     <View style={styles.view}>
                         <Text style={styles.label}>Nowe hasło</Text>
-                        <TextInput secureTextEntry={true} value={newPassword} style={styles.input} placeholder="nowe hasło" autoCapitalize='none' onChangeText={(text) => setNewPassword(text)} />
+                        <TextInput secureTextEntry={true} value={newPassword} style={styles.input} placeholder="nowe hasło" autoCapitalize='none' onChangeText={(text) => setNewPassword(text)} placeholderTextColor="gray"/>
                     </View>
                     <View style={styles.view}>
                         <Text style={styles.label}>Powtórz nowe hasło</Text>
-                        <TextInput secureTextEntry={true} value={repeatedNewPassword} style={styles.input} placeholder="powtórz nowe hasło" autoCapitalize='none' onChangeText={(text) => setRepeatedNewPasswordNewPassword(text)} />
+                        <TextInput secureTextEntry={true} value={repeatedNewPassword} style={styles.input} placeholder="powtórz nowe hasło" autoCapitalize='none' onChangeText={(text) => setRepeatedNewPasswordNewPassword(text)} placeholderTextColor="gray"/>
                     </View>
                     {loading ? (<ActivityIndicator size='large' color='#0000ff' />) : (
                     <Pressable onPress={saveEdits} style={styles.button}>
