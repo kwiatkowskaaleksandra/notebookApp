@@ -11,6 +11,10 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+import javax.net.ssl.SSLContext
+import javax.net.ssl.HttpsURLConnection
 
 class MainApplication : Application(), ReactApplication {
 
@@ -35,6 +39,29 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    
+    val trustAllCerts: Array<TrustManager> = arrayOf(
+        object : X509TrustManager {
+            override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+            }
+
+            override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+            }
+
+            override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> {
+                return arrayOf()
+            }
+        }
+    )
+
+    try {
+        val sc: SSLContext = SSLContext.getInstance("SSL")
+        sc.init(null, trustAllCerts, java.security.SecureRandom())
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
     SoLoader.init(this, false)
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.

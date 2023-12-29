@@ -1,118 +1,66 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import Home from './screens/Home';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator  } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import IconStickyNote from 'react-native-vector-icons/FontAwesome';
+import IconSettings from 'react-native-vector-icons/Ionicons'
+import { AuthProvider } from './AuthContext';
+import Login from './screens/Login';
+import Register from './screens/Register';
+import Notebook from './screens/Notebook';
+import Settings from './screens/Settings';
+import AddNote from './screens/AddNote';
+import OpenNote from './screens/OpenNote';
+import MyProfile from './screens/MyProfile';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+type RootStackParamList = {
+  Home: undefined;
+  Login: undefined;
+  Register: undefined;
+  Notebook: undefined;
+  Settings: undefined;
+  MainScreen: undefined;
+  AddNote: undefined;
+  OpenNote: { id: number };
+  MyProfile: undefined;
+};
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const Stack = createStackNavigator<RootStackParamList>()
+const Tab = createBottomTabNavigator();
+function MainScreen() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name="Notebook" component={Notebook} options={{
+        tabBarIcon: () => (
+          <IconStickyNote name="sticky-note" size={24} color="#f2bc0c" />
+        )
+      }} />
+      <Tab.Screen name="Ustawienia" component={Settings} options={{
+        tabBarIcon: () => (
+          <IconSettings name="settings" size={24} color="#f2bc0c" />
+        )
+      }} />
+    </Tab.Navigator>
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+export default function App() {
+  
+  
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <AuthProvider  >
+      <NavigationContainer >
+        <Stack.Navigator initialRouteName="Home" >
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: true, headerTitle: 'Zaloguj się', headerTitleStyle: { fontFamily: 'PlaypenSans-Medium' } }} />
+          <Stack.Screen name="Register" component={Register} options={{ headerShown: true, headerTitle: 'Zarejestruj się', headerTitleStyle: { fontFamily: 'PlaypenSans-Medium' } }} />
+          <Stack.Screen name="Notebook" component={Notebook} options={{headerLeft: () => null }} />
+          <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="AddNote" component={AddNote} options={{ headerLeft: () => null, headerTitle: 'Dodaj notatkę', headerTitleStyle: { fontFamily: 'PlaypenSans-Medium' } }} />
+          <Stack.Screen name="OpenNote" component={OpenNote} initialParams={{id: 2}} options={{ headerLeft: () => null, headerTitle: '', headerTitleStyle: { fontFamily: 'PlaypenSans-Medium' } }} />
+          <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerLeft: () => null, headerTitle: 'Mój profil', headerTitleStyle: { fontFamily: 'PlaypenSans-Medium' } }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
